@@ -7,7 +7,7 @@ Summary(fr):	Clône MSN Messenger pour Linux
 Summary(de):	MSN Messenger-Klon für Linux
 Name:		amsn
 Version:	0.94
-Release:	0.4
+Release:	0.5
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
@@ -27,6 +27,7 @@ Requires:	tcl >= 8.3
 Requires:	tcl-tls
 # IM's convert is needed to display pictures (buddy icons).
 Requires:	ImageMagick
+%{!?with_imlib:BuildArch:	noarch}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
