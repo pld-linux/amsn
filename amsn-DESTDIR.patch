@@ -1,0 +1,48 @@
+--- amsn-0_94/Makefile~	2004-12-06 19:54:34.000000000 +0100
++++ amsn-0_94/Makefile	2004-12-06 19:54:34.000000000 +0100
+@@ -36,14 +36,14 @@
+ all: install
+ 
+ mkdirs:
+-	mkdir -p $(libdir)
+-	mkdir -p $(datadir)
+-	mkdir -p $(wmapps)
+-	mkdir -p $(bindir)
++	mkdir -p $(DESTDIR)$(libdir)
++	mkdir -p $(DESTDIR)$(datadir)
++	mkdir -p $(DESTDIR)$(wmapps)
++	mkdir -p $(DESTDIR)$(bindir)
+ 
+ installdoc:
+-	mkdir -p ${DOCDIR}
+-	cp -rp docs/ ${DOCDIR}
++	mkdir -p $(DESTDIR)${DOCDIR}
++	cp -rp docs/ $(DESTDIR)${DOCDIR}
+ 
+ 
+ install: mkdirs installdoc
+@@ -51,8 +51,8 @@
+ 	@# cd plugins/traydock
+ 	@# make && cd ..
+ 
+-	mkdir -p ${libdir}
+-	cp -a * ${libdir}
++	mkdir -p $(DESTDIR)${libdir}
++	cp -a * $(DESTDIR)${libdir}
+ 
+ 	@# Copy menu file.
+ 	@# cp ${desklink} ${wmapps}
+@@ -61,10 +61,10 @@
+ 	@# find ${libdir} -type d -name CVS -exec rm -rf {} \;
+ 
+ 	@# Installing pixmaps.
+-	mkdir -p ${pdatadir}
+-	cp -a icons/32x32/* ${pdatadir}
++	mkdir -p $(DESTDIR)${pdatadir}
++	cp -a icons/32x32/* $(DESTDIR)${pdatadir}
+ 
+-	ln -s ${libdir}/amsn ${bindir}
++	ln -s ${libdir}/amsn $(DESTDIR)${bindir}
+ 
+ uninstall:
+ 	rm -rf ${libdir}
