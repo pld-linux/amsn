@@ -8,7 +8,7 @@ Summary(fr):	Clône MSN Messenger pour Linux
 Summary(pl):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.94
-Release:	0.5
+Release:	0.7
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
@@ -60,11 +60,10 @@ dzia³a ca³kiem dobrze.
 
 %prep
 %setup -q -n %{name}-%{_ver}
-
-%build
 # add InstantMessaging category
 sed -i -e '/Categories=/s/.*/Categories=Network;InstantMessaging;/' %{name}.desktop
 
+%build
 %if %{with imlib}
 cd plugins/traydock
 %configure
@@ -105,6 +104,7 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/{CREDITS,GNUGPL,README,HELP,FAQ,TODO,Make
 rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/sndplay
 # not for our arch
 rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/{winflash,winutils,QuickTimeTcl3.1,applescript,tclCarbonNotification,tclAE2.0}
+rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/{Makefile,gtkdock.?}
 rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/winico*
 rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/utils
 
