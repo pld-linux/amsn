@@ -8,7 +8,7 @@ Summary(fr):	Clône MSN Messenger pour Linux
 Summary(pl):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.94
-Release:	0.7
+Release:	1
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
