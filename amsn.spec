@@ -56,7 +56,7 @@ Visitez http://amsn.sourceforge.net/ pour de plus amples détails.
 amsn to klient Microsoft Messengera (MSN) dla Uniksów, Windows i
 Macintosha napisany w Tcl/Tk. Obs³uguje przesy³anie plików, grupy i
 wiele wiêcej mo¿liwo¶ci - szczegó³y pod adresem
-http://amsn.sourceforge.net/ . Projekt jest nadal rozwijany i ju¿
+<http://amsn.sourceforge.net/>. Projekt jest nadal rozwijany i ju¿
 dzia³a ca³kiem dobrze.
 
 %prep
