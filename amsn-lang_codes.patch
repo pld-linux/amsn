@@ -1,0 +1,40 @@
+--- amsn-0_94/langlist~	2005-05-17 08:26:50.000000000 +0200
++++ amsn-0_94/langlist	2005-05-17 08:26:50.000000000 +0200
+@@ -16,9 +16,9 @@
+ fi iso8859-1 Finnish
+ fr iso8859-1 French (France)
+ fr_CA iso8859-1 French (Canadian)
+-fri iso8859-1 Frisian
++fy iso8859-1 Frisian
+ fur iso8859-1 Friulian
+-glg iso8859-1 Galician
++gl iso8859-1 Galician
+ gr iso8859-7 Greek
+ gr2 iso8859-1 Greeklish
+ hu iso8859-2 Hungary
+@@ -29,21 +29,21 @@
+ ko euc-kr Korean
+ mk utf-8 Macedonian
+ mn utf-8 Mongolian
+-no iso8859-1 Norwegian
++nb iso8859-1 Norwegian Bokmaal
+ pl iso8859-2 Polish
+ pt iso8859-1 Portuguese (Portugal)
+ pt_BR iso8859-1 Portuguese (Brazil)
+ ro iso8859-2 Romanian
+ ru koi8-r Russian
+-zh-CN iso8859-1 Simplified Chinese
++zh_CN iso8859-1 Simplified Chinese
+ sk iso8859-1 Slovak
+ sl iso8859-2 Slovenian (Slovenscina)
+ af iso8859-1 South African
+ es iso8859-1 Spanish
+ sr iso8859-5 Srpski
+-swa iso8859-1 Swahili
++sw iso8859-1 Swahili
+ sv iso8859-1 Swedish
+ ta iso8859-1 Tamil
+-zh-TW big5 Traditional Chinese(Taiwan)
++zh_TW big5 Traditional Chinese(Taiwan)
+ tr iso8859-9 Turkish
+ va iso8859-1 Valencian
