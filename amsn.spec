@@ -8,7 +8,7 @@ Summary(fr):	Clône MSN Messenger pour Linux
 Summary(pl):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.94
-Release:	2
+Release:	3
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
@@ -16,6 +16,8 @@ Group:		Applications/Communications
 Source0:	http://dl.sourceforge.net/amsn/%{name}-%{_ver}.tar.gz
 # Source0-md5:	7b7db9225342bb6c59b873ec90882e22
 Patch0:		%{name}-DESTDIR.patch
+Patch1:		%{name}-desktop.patch
+Patch2:		%{name}-lang_codes.patch
 URL:		http://amsn.sourceforge.net/
 %{?with_imlib:BuildRequires:	imlib-devel}
 BuildRequires:	libpng-devel
@@ -62,9 +64,15 @@ dzia³a ca³kiem dobrze.
 %prep
 %setup -q -n %{name}-%{_ver}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
-# add InstantMessaging category
-sed -i -e '/Categories=/s/.*/Categories=Network;InstantMessaging;/' %{name}.desktop
+mv -f lang/lang{fri,fy}
+mv -f lang/lang{glg,gl}
+mv -f lang/lang{no,nb}
+mv -f lang/lang{swa,sw}
+mv -f lang/langzh{-,_}CN
+mv -f lang/langzh{-,_}TW
 
 %build
 %if %{with imlib}
