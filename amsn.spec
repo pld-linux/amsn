@@ -1,25 +1,18 @@
-#
-# Conditional build:
-%bcond_without	imlib	# do not compile freedesktop notification plugin
-#
 Summary:	MSN Messenger clone for Linux
 Summary(de):	MSN Messenger-Klon für Linux
 Summary(fr):	Clône MSN Messenger pour Linux
 Summary(pl):	Klon MSN Messengera dla Linuksa
 Name:		amsn
-Version:	0.94
-Release:	3
+Version:	0.95
+Release:	1
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
-%define	_ver	%(echo %{version} | tr . _)
-Source0:	http://dl.sourceforge.net/amsn/%{name}-%{_ver}.tar.gz
-# Source0-md5:	7b7db9225342bb6c59b873ec90882e22
-Patch0:		%{name}-DESTDIR.patch
-Patch1:		%{name}-desktop.patch
-Patch2:		%{name}-lang_codes.patch
+Source0:	http://dl.sourceforge.net/amsn/%{name}-%{version}.tar.gz
+# Source0-md5:	f57e3c2c78a3c7d64c93a78be88846aa
+Patch0:		%{name}-desktop.patch
+Patch1:		%{name}-libng_plugin_init.patch
 URL:		http://amsn.sourceforge.net/
-%{?with_imlib:BuildRequires:	imlib-devel}
 BuildRequires:	libpng-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	sed >= 4.0
@@ -31,7 +24,6 @@ Requires:	tcl >= 8.3
 # MSN Protocol 9 won't let you in without SSL anymore.
 Requires:	tcl-tls
 Requires:	tk >= 8.3
-%{!?with_imlib:BuildArch:	noarch}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -62,63 +54,45 @@ wiele wiêcej mo¿liwo¶ci - szczegó³y pod adresem
 dzia³a ca³kiem dobrze.
 
 %prep
-%setup -q -n %{name}-%{_ver}
+%setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-
-mv -f lang/lang{fri,fy}
-mv -f lang/lang{glg,gl}
-mv -f lang/lang{no,nb}
-mv -f lang/lang{swa,sw}
-mv -f lang/langzh{-,_}CN
-mv -f lang/langzh{-,_}TW
 
 %build
-%if %{with imlib}
-cd plugins/traydock
-%configure
+%configure \
+	CFLAGS="%{rpmcflags}"
 %{__make}
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}
+install -d $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-%{__make} install \
-	prefix=%{_prefix} \
-	DESTDIR=$RPM_BUILD_ROOT
-
-%if %{with imlib}
-	# Installing the freedesktop notification plugin"
-	install -d $RPM_BUILD_ROOT%{_libdir}/amsn/plugins/traydock
-	mv $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/traydock/libtray.so $RPM_BUILD_ROOT%{_libdir}/amsn/plugins/traydock
-	rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/traydock
-	ln -s ../../../%{_lib}/amsn/plugins/traydock $RPM_BUILD_ROOT%{_datadir}/amsn/plugins
-%else
-	rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/traydock
-%endif
-
-# force relative path
 # FIXME: FHS?
-ln -sf ../share/amsn/amsn $RPM_BUILD_ROOT%{_bindir}
+%{__make} install \
+	prefix=$RPM_BUILD_ROOT%{_prefix} \
+	exec_prefix=$RPM_BUILD_ROOT%{_bindir} \
+	dstdir=$RPM_BUILD_ROOT%{_libdir} \
+	slnkdir=$RPM_BUILD_ROOT%{_bindir}
 
 install -d $RPM_BUILD_ROOT%{_desktopdir}
 install %{name}.desktop $RPM_BUILD_ROOT%{_desktopdir}/%{name}.desktop
 
+for f in amsn{,-remote{,-CLI}}; do
+	rm $RPM_BUILD_ROOT%{_bindir}/$f
+	ln -s ../%{_lib}/%{name}/$f $RPM_BUILD_ROOT%{_bindir}
+done
+
 # remove junk
-rm -rf $RPM_BUILD_ROOT%{_datadir}/doc/amsn-0.91
-rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/amsn.{desktop,spec,debianmenu}
+rm -rf $RPM_BUILD_ROOT%{_libdir}/doc/amsn-0.91
+rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/amsn.{desktop,spec,debianmenu}
 # docs in docs
-rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/docs
-rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/{CREDITS,GNUGPL,README,HELP,FAQ,TODO,Makefile,cvs_date}
+rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/docs
+rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/{AGREEMENT,CREDITS,GNUGPL,INSTALL,README,HELP,FAQ,TODO,Makefile,cvs_date}
+rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/utils/*/test.tcl
 # random binary for PPC
-rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/sndplay
-# not for our arch
-rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/{winflash,winutils,QuickTimeTcl3.1,applescript,tclCarbonNotification,tclAE2.0}
-rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/{Makefile,gtkdock.?}
-rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/plugins/winico*
-rm -rf $RPM_BUILD_ROOT%{_datadir}/amsn/utils
+rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/sndplay
+
+mv $RPM_BUILD_ROOT%{_libdir}/icons $RPM_BUILD_ROOT%{_iconsdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -126,20 +100,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ GNUGPL HELP README TODO CREDITS
-%attr(755,root,root) %{_bindir}/*
+%{_bindir}/*
+%{_libdir}/%{name}/a[!m]*
+%{_libdir}/%{name}/[!a]*
+%attr(755,root,root) %{_libdir}/%{name}/amsn*
 
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/icons
-%{_datadir}/%{name}/lang
-%{_datadir}/%{name}/plugins
-%{_datadir}/%{name}/skins
-%{_datadir}/%{name}/*.tcl
-%{_datadir}/%{name}/hotmlog.htm
-%{_datadir}/%{name}/langlist
-%{_datadir}/%{name}/remote.help
-
-%attr(755,root,root) %{_datadir}/%{name}/%{name}*
-
-%{_pixmapsdir}/*.png
+%{_iconsdir}/hicolor/*/*.png
 %{_desktopdir}/%{name}.desktop
-%{?with_imlib:%{_libdir}/amsn}
