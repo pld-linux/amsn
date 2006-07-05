@@ -1,0 +1,17 @@
+--- amsn-0.95/utils/linux/capture/libng/grab-ng.c~	2005-12-22 03:06:25.000000000 +0100
++++ amsn-0.95/utils/linux/capture/libng/grab-ng.c	2006-04-08 17:20:44.453258750 +0200
+@@ -1140,12 +1140,13 @@
+ 	    continue;
+ 	}
+ 
++	if (NULL == (initcall = dlsym(plugin,"plugin_init")))
+ 	if (NULL == (initcall = dlsym(plugin,"ng_plugin_init"))) {
+ 	    if (NULL == (initcall = dlsym(plugin,"_ng_plugin_init"))) {
+ 		fprintf(stderr,"dlsym[%s]: %s\n",filename,dlerror());
+ 		continue;
+ 	    }
+-	}
++	};
+ #if 0
+ 	initcall();
+ #endif
