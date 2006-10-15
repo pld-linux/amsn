@@ -1,25 +1,25 @@
---- amsn-0_94/amsn.desktop~	2005-05-17 08:33:33.000000000 +0200
-+++ amsn-0_94/amsn.desktop	2005-05-17 08:33:33.000000000 +0200
-@@ -1,13 +1,15 @@
- [Desktop Entry]
-+Encoding=UTF-8
- Name=aMSN
+--- amsn-0.95/amsn.desktop~	2006-10-15 21:43:48.632179540 +0300
++++ amsn-0.95/amsn.desktop	2006-10-15 21:45:21.184256246 +0300
+@@ -4,12 +4,14 @@
  Exec=amsn
  Icon=msn.png
  Info=AMSN
 -Categories=Application;Network;
 -Comment="MSN Messenger for Linux"
 -Comment[fr]="MSN Messenger pour Linux"
--Comment[de]="MSN Messenger für Linux"
+-Comment[de]="MSN Messenger fr Linux"
 -Comment[nl]="MSN Messenger voor Linux"
 -Comment[no]="MSN Messenger for Linux"
--Terminal=0
 +Categories=Network;InstantMessaging;
 +Comment=MSN Messenger for Linux
 +Comment[fr]=MSN Messenger pour Linux
-+Comment[de]=MSN Messenger fÃ¼r Linux
++Comment[de]=MSN Messenger fr Linux
 +Comment[nb]=MSN Messenger for Linux
 +Comment[nl]=MSN Messenger voor Linux
++Comment[no]=MSN Messenger for Linux
 +Comment[pl]=MSN Messenger dla Linuksa
-+Terminal=false
+ Terminal=false
  Type=Application
+-StartupNotify=true
+\ No newline at end of file
++StartupNotify=true
