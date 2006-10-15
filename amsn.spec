@@ -75,7 +75,7 @@ install -d $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 install -d $RPM_BUILD_ROOT%{_desktopdir}
 install %{name}.desktop $RPM_BUILD_ROOT%{_desktopdir}/%{name}.desktop
-rm -f $RPM_BUILD_ROOT%{_prefix}/lib/applications/amsn.desktop
+rm -f $RPM_BUILD_ROOT%{_libdir}/applications/amsn.desktop
 
 for f in amsn{,-remote{,-CLI}}; do
 	rm $RPM_BUILD_ROOT%{_bindir}/$f
