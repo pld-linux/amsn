@@ -36,15 +36,14 @@ well.
 %description -l de
 amsn ist ein Microsoft Messenger (MSN) Client für UNIX, Windows und
 Macintosh, der in Tcl/Tk geschrieben ist. Es unterstützt
-Dateiübertragungen, Gruppen uvm.
-Begeben Sie sich auf http://amsn.sourceforge.net/ um mehr über dieses
-Projekt zu erfahren.
+Dateiübertragungen, Gruppen uvm. Begeben Sie sich auf
+http://amsn.sourceforge.net/ um mehr über dieses Projekt zu erfahren.
 
 %description -l fr
 amsn est un client Microsoft Messenger (MSN) pour UNIX, Windows et
-Macintosh écrit en Tcl/Tk.  Il supporte les tranferts de fichiers, les
-groupes et beaucoup d'autres possibilités. 
-Visitez http://amsn.sourceforge.net/ pour de plus amples détails.
+Macintosh écrit en Tcl/Tk. Il supporte les tranferts de fichiers, les
+groupes et beaucoup d'autres possibilités. Visitez
+http://amsn.sourceforge.net/ pour de plus amples détails.
 
 %description -l pl
 amsn to klient Microsoft Messengera (MSN) dla Uniksów, Windows i
@@ -54,7 +53,7 @@ wiele wiêcej mo¿liwo¶ci - szczegó³y pod adresem
 dzia³a ca³kiem dobrze.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 %patch0 -p1
 %patch1 -p1
 
@@ -76,6 +75,7 @@ install -d $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 install -d $RPM_BUILD_ROOT%{_desktopdir}
 install %{name}.desktop $RPM_BUILD_ROOT%{_desktopdir}/%{name}.desktop
+rm -f $RPM_BUILD_ROOT%{_prefix}/lib/applications/amsn.desktop
 
 for f in amsn{,-remote{,-CLI}}; do
 	rm $RPM_BUILD_ROOT%{_bindir}/$f
@@ -100,7 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ GNUGPL HELP README TODO CREDITS
-%{_bindir}/*
+%attr(755,root,root) %{_bindir}/*
 %{_libdir}/%{name}/a[!m]*
 %{_libdir}/%{name}/[!a]*
 %attr(755,root,root) %{_libdir}/%{name}/amsn*
