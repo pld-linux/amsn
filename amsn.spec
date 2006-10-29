@@ -4,7 +4,7 @@ Summary(fr):	Clône MSN Messenger pour Linux
 Summary(pl):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.95
-Release:	1
+Release:	2
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
@@ -54,6 +54,10 @@ dzia³a ca³kiem dobrze.
 
 %prep
 %setup -q
+
+# undos some source files
+find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
+
 %patch0 -p1
 %patch1 -p1
 
@@ -101,6 +105,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc FAQ GNUGPL HELP README TODO CREDITS
 %attr(755,root,root) %{_bindir}/*
+%dir %{_libdir}/%{name}
 %{_libdir}/%{name}/a[!m]*
 %{_libdir}/%{name}/[!a]*
 %attr(755,root,root) %{_libdir}/%{name}/amsn*
