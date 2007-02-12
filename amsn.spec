@@ -1,7 +1,7 @@
 Summary:	MSN Messenger clone for Linux
-Summary(de):	MSN Messenger-Klon für Linux
-Summary(fr):	Clône MSN Messenger pour Linux
-Summary(pl):	Klon MSN Messengera dla Linuksa
+Summary(de.UTF-8):   MSN Messenger-Klon fÃ¼r Linux
+Summary(fr.UTF-8):   ClÃ´ne MSN Messenger pour Linux
+Summary(pl.UTF-8):   Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.95
 Release:	2
@@ -33,24 +33,24 @@ groups, and many more features. Visit http://amsn.sourceforge.net/ for
 details. This is an ongoing project, and it is already going pretty
 well.
 
-%description -l de
-amsn ist ein Microsoft Messenger (MSN) Client für UNIX, Windows und
-Macintosh, der in Tcl/Tk geschrieben ist. Es unterstützt
-Dateiübertragungen, Gruppen uvm. Begeben Sie sich auf
-http://amsn.sourceforge.net/ um mehr über dieses Projekt zu erfahren.
+%description -l de.UTF-8
+amsn ist ein Microsoft Messenger (MSN) Client fÃ¼r UNIX, Windows und
+Macintosh, der in Tcl/Tk geschrieben ist. Es unterstÃ¼tzt
+DateiÃ¼bertragungen, Gruppen uvm. Begeben Sie sich auf
+http://amsn.sourceforge.net/ um mehr Ã¼ber dieses Projekt zu erfahren.
 
-%description -l fr
+%description -l fr.UTF-8
 amsn est un client Microsoft Messenger (MSN) pour UNIX, Windows et
-Macintosh écrit en Tcl/Tk. Il supporte les tranferts de fichiers, les
-groupes et beaucoup d'autres possibilités. Visitez
-http://amsn.sourceforge.net/ pour de plus amples détails.
+Macintosh Ã©crit en Tcl/Tk. Il supporte les tranferts de fichiers, les
+groupes et beaucoup d'autres possibilitÃ©s. Visitez
+http://amsn.sourceforge.net/ pour de plus amples dÃ©tails.
 
-%description -l pl
-amsn to klient Microsoft Messengera (MSN) dla Uniksów, Windows i
-Macintosha napisany w Tcl/Tk. Obs³uguje przesy³anie plików, grupy i
-wiele wiêcej mo¿liwo¶ci - szczegó³y pod adresem
-<http://amsn.sourceforge.net/>. Projekt jest nadal rozwijany i ju¿
-dzia³a ca³kiem dobrze.
+%description -l pl.UTF-8
+amsn to klient Microsoft Messengera (MSN) dla UniksÃ³w, Windows i
+Macintosha napisany w Tcl/Tk. ObsÅ‚uguje przesyÅ‚anie plikÃ³w, grupy i
+wiele wiÄ™cej moÅ¼liwoÅ›ci - szczegÃ³Å‚y pod adresem
+<http://amsn.sourceforge.net/>. Projekt jest nadal rozwijany i juÅ¼
+dziaÅ‚a caÅ‚kiem dobrze.
 
 %prep
 %setup -q
