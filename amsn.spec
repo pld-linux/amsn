@@ -1,7 +1,7 @@
 Summary:	MSN Messenger clone for Linux
-Summary(de.UTF-8):   MSN Messenger-Klon für Linux
-Summary(fr.UTF-8):   Clône MSN Messenger pour Linux
-Summary(pl.UTF-8):   Klon MSN Messengera dla Linuksa
+Summary(de.UTF-8):	MSN Messenger-Klon für Linux
+Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
+Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.95
 Release:	2
