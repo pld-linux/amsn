@@ -1,10 +1,15 @@
+# TODO
+# - check that the killed precompiled libraries are not needed (use some system ones)
+# - probable -L poisoning:
+# /usr/bin/ld: skipping incompatible /usr/lib/libm.so when searching for -lm
+# /usr/bin/ld: skipping incompatible /usr/lib/libc.so when searching for -lc
 Summary:	MSN Messenger clone for Linux
 Summary(de.UTF-8):	MSN Messenger-Klon für Linux
 Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.96
-Release:	1
+Release:	0.2
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
