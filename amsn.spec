@@ -63,6 +63,13 @@ find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
 # precompiled ELF 32 library
 rm -f utils/Tclxml/libTclxml3.1.so
+# Mach-O executable ppc
+rm -f sndplay
+
+# MS-DOS executable PE  for MS Windows (DLL) (GUI) Intel 80386 32-bit
+rm -f utils/*/*.dll utils/*/*/*.dll
+# MS-DOS executable PE  for MS Windows (GUI) Intel 80386 32-bit
+rm -f utils/*/*.exe utils/*/*/*.exe
 
 %build
 %configure \
