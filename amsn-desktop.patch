@@ -1,18 +1,16 @@
---- amsn-0.96.orig/amsn.desktop	2007-03-05 22:43:49.403398500 +0100
-+++ amsn-0.96/amsn.desktop	2007-03-05 23:02:37.065873000 +0100
-@@ -4,12 +4,14 @@
- Exec=amsn
- Icon=msn.png
- Info=AMSN
--Categories=Application;Network;
-+Categories=Network;InstantMessaging;
+diff -burNp amsn-0.97/amsn.desktop amsn-0.97-new/amsn.desktop
+--- amsn-0.97/amsn.desktop	2007-12-06 19:23:54.000000000 +0100
++++ amsn-0.97-new/amsn.desktop	2008-10-26 08:50:12.616669979 +0100
+@@ -6,8 +6,12 @@ Categories=Network;InstantMessaging;
  Comment=MSN Messenger for Linux
  Comment[fr]=MSN Messenger pour Linux
- Comment[de]=MSN Messenger fr Linux
+ Comment[de]=MSN Messenger für Linux
 +Comment[nb]=MSN Messenger for Linux
  Comment[nl]=MSN Messenger voor Linux
  Comment[no]=MSN Messenger for Linux
++Comment[es]=MSN Messenger para Linux
 +Comment[pl]=MSN Messenger dla Linuksa
  Terminal=false
  Type=Application
  StartupNotify=true
++# vi: encoding=utf-8
