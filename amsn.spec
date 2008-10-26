@@ -1,34 +1,29 @@
-# TODO
-# - check that the killed precompiled libraries are not needed (use some system ones)
-# - probable -L poisoning:
-# /usr/bin/ld: skipping incompatible /usr/lib/libm.so when searching for -lm
-# /usr/bin/ld: skipping incompatible /usr/lib/libc.so when searching for -lc
 Summary:	MSN Messenger clone for Linux
 Summary(de.UTF-8):	MSN Messenger-Klon für Linux
 Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
-Version:	0.96
-Release:	0.2
+Version:	0.97
+Release:	0.1
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://dl.sourceforge.net/amsn/%{name}-%{version}.tar.gz
-# Source0-md5:	e0e9d304c8221048de4d1c3723d7d38a
+# Source0-md5:	0ae903f6cac24c042f4ef74b5015ea88
 Patch0:		%{name}-desktop.patch
-Patch1:		%{name}-libng_plugin_init.patch
 URL:		http://amsn.sourceforge.net/
 BuildRequires:	libpng-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	sed >= 4.0
-BuildRequires:	tcl-devel >= 8.3
-BuildRequires:	tk-devel >= 8.3
+BuildRequires:	tcl-devel >= 8.4
+BuildRequires:	tk-devel >= 8.4
+Requires(post,postun):	hicolor-icon-theme
 # IM's convert is needed to display pictures (buddy icons).
 Requires:	ImageMagick
-Requires:	tcl >= 8.3
+Requires:	tcl >= 8.4
 # MSN Protocol 9 won't let you in without SSL anymore.
 Requires:	tcl-tls
-Requires:	tk >= 8.3
+Requires:	tk >= 8.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -64,17 +59,9 @@ działa całkiem dobrze.
 find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
 %patch0 -p1
-%patch1 -p1
 
-# precompiled ELF 32 library
-rm -f utils/Tclxml/libTclxml3.1.so
-# Mach-O executable ppc
-rm -f sndplay
-
-# MS-DOS executable PE  for MS Windows (DLL) (GUI) Intel 80386 32-bit
-rm -f utils/*/*.dll utils/*/*/*.dll
-# MS-DOS executable PE  for MS Windows (GUI) Intel 80386 32-bit
-rm -f utils/*/*.exe utils/*/*/*.exe
+# MS-DOS executable PE for MS Windows (GUI) Intel 80386 32-bit
+rm -f utils/*/*/*.exe
 
 %build
 %configure \
@@ -83,7 +70,7 @@ rm -f utils/*/*.exe utils/*/*/*.exe
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}
+install -d $RPM_BUILD_ROOT{%{_iconsdir}/hicolor/,%{_pixmapsdir},%{_desktopdir}}
 
 # FIXME: FHS?
 %{__make} install \
@@ -92,9 +79,11 @@ install -d $RPM_BUILD_ROOT%{_libdir}/%{name}
 	dstdir=$RPM_BUILD_ROOT%{_libdir} \
 	slnkdir=$RPM_BUILD_ROOT%{_bindir}
 
-install -d $RPM_BUILD_ROOT%{_desktopdir}
 install %{name}.desktop $RPM_BUILD_ROOT%{_desktopdir}/%{name}.desktop
 rm -f $RPM_BUILD_ROOT%{_libdir}/applications/amsn.desktop
+
+rm -rf $RPM_BUILD_ROOT%{_libdir}/pixmaps
+ln -s %{_iconsdir}/hicolor/48x48/apps/%{name}.png $RPM_BUILD_ROOT%{_pixmapsdir}
 
 for f in amsn{,-remote{,-CLI}}; do
 	rm $RPM_BUILD_ROOT%{_bindir}/$f
@@ -102,19 +91,23 @@ for f in amsn{,-remote{,-CLI}}; do
 done
 
 # remove junk
-rm -rf $RPM_BUILD_ROOT%{_libdir}/doc/amsn-0.91
-rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/amsn.{desktop,spec,debianmenu}
+rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/amsn.desktop
 # docs in docs
 rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/docs
-rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/{AGREEMENT,CREDITS,GNUGPL,INSTALL,README,HELP,FAQ,TODO,Makefile,cvs_date}
+rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/{AGREEMENT,CREDITS,GNUGPL,INSTALL,README,HELP,FAQ,TODO}
 rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/utils/*/test.tcl
-# random binary for PPC
-rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/sndplay
 
-mv $RPM_BUILD_ROOT%{_libdir}/icons $RPM_BUILD_ROOT%{_iconsdir}
+mv $RPM_BUILD_ROOT%{_libdir}/amsn/desktop-icons/* $RPM_BUILD_ROOT%{_iconsdir}/hicolor/
+rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/desktop-icons
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+%update_icon_cache hicolor
+
+%postun
+%update_icon_cache hicolor
 
 %files
 %defattr(644,root,root,755)
@@ -122,8 +115,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/a[!m]*
+%{_libdir}/%{name}/amsn[!-]*
 %{_libdir}/%{name}/[!a]*
-%attr(755,root,root) %{_libdir}/%{name}/amsn*
+%attr(755,root,root) %{_libdir}/%{name}/amsn
+%attr(755,root,root) %{_libdir}/%{name}/amsn-remote*
 
-%{_iconsdir}/hicolor/*/*.png
+%{_iconsdir}/hicolor/*/apps/*.png
 %{_desktopdir}/%{name}.desktop
+%{_pixmapsdir}/%{name}.png
