@@ -12,6 +12,7 @@ Source0:	http://dl.sourceforge.net/amsn/%{name}-%{version}.tar.gz
 # Source0-md5:	c6c2e9c016c39dfbae80028a3c745419
 Patch0:		%{name}-desktop.patch
 Patch1:		%{name}-tkcximage.patch
+Patch2:		%{name}-paths.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	libpng-devel
 BuildRequires:	libtiff-devel
@@ -83,6 +84,7 @@ rm -r skins/default/winicons
 
 %patch0 -p1
 %patch1 -p2
+%patch2 -p1
 
 # MS-DOS executable PE for MS Windows (GUI) Intel 80386 32-bit
 rm -f utils/*/*/*.exe

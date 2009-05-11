@@ -1,0 +1,48 @@
+--- amsn-0.97.2/amsn-remote-CLI~	2009-05-11 21:52:14.000000000 +0300
++++ amsn-0.97.2/amsn-remote-CLI	2009-05-11 22:01:11.012771873 +0300
+@@ -5,8 +5,6 @@
+ 
+ set initialize_amsn 1
+ 
+-source amsncore.tcl
+-
+ proc readsocket { } {
+ 	global sock
+ 
+@@ -229,6 +227,7 @@
+    }
+ }
+ 
++source [file join $program_dir amsncore.tcl]
+ source [file join $program_dir migmd5.tcl]
+ 
+ set sockDS 0
+--- amsn-0.97.2/amsn-remote~	2009-05-11 21:52:14.000000000 +0300
++++ amsn-0.97.2/amsn-remote	2009-05-11 22:00:24.855888586 +0300
+@@ -3,8 +3,6 @@
+ ### Remote controller program
+ ###
+ 
+-source amsncore.tcl
+-
+ set initialize_amsn 1
+ 
+ proc readsocket { } {
+@@ -304,6 +302,7 @@
+ unset program
+ #unset program_dir
+ 
++source [file join $program_dir amsncore.tcl]
+ source [file join $program_dir migmd5.tcl]
+ 
+ set sockDS 0
+--- amsn-0.97.2/amsn~	2009-05-11 22:02:30.201686860 +0300
++++ amsn-0.97.2/amsn	2009-05-11 22:03:23.071931274 +0300
+@@ -1,6 +1,4 @@
+-#!/bin/sh
+-# \
+-exec wish $0 $@
++#!/usr/bin/wish
+ 
+ ###
+ ###
