@@ -1,14 +1,13 @@
-diff -burNp amsn-0.97/amsn.desktop amsn-0.97-new/amsn.desktop
---- amsn-0.97/amsn.desktop	2007-12-06 19:23:54.000000000 +0100
-+++ amsn-0.97-new/amsn.desktop	2008-10-26 08:50:12.616669979 +0100
-@@ -6,8 +6,12 @@ Categories=Network;InstantMessaging;
+--- amsn-0.97.2/amsn.desktop~	2008-07-10 23:54:42.000000000 +0300
++++ amsn-0.97.2/amsn.desktop	2009-05-11 18:54:01.216674578 +0300
+@@ -6,9 +6,12 @@
  Comment=MSN Messenger for Linux
  Comment[fr]=MSN Messenger pour Linux
  Comment[de]=MSN Messenger für Linux
 +Comment[nb]=MSN Messenger for Linux
  Comment[nl]=MSN Messenger voor Linux
  Comment[no]=MSN Messenger for Linux
-+Comment[es]=MSN Messenger para Linux
+ Comment[es]=MSN Messenger para Linux
 +Comment[pl]=MSN Messenger dla Linuksa
  Terminal=false
  Type=Application
