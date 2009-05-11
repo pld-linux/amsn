@@ -4,7 +4,7 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.97.2
-Release:	0.8
+Release:	1
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
@@ -15,6 +15,7 @@ Patch1:		%{name}-tkcximage.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	libpng-devel
 BuildRequires:	libtiff-devel
+BuildRequires:	rpmbuild(macros) >= 1.517
 BuildRequires:	sed >= 4.0
 BuildRequires:	tcl-devel >= 8.4
 BuildRequires:	tk-devel >= 8.4
@@ -28,9 +29,6 @@ Requires:	tcllib
 Requires:	tcl-tls
 Requires:	tk >= 8.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		tcl_version		%(rpm -q --qf %{V} tcl-devel | cut -d. -f1,2)
-%define		tcl_sitearch	%{_libdir}/tcl%{tcl_version}
 
 %description
 This is Tcl/Tk clone that implements the Microsoft Messenger (MSN) for
@@ -105,12 +103,12 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn $RPM_BUILD_ROOT%{_bindir}/amsn
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote $RPM_BUILD_ROOT%{_bindir}/amsn-remote
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote-CLI $RPM_BUILD_ROOT%{_bindir}/amsn-remote-CLI
 
-#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/base64
-#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http2.4
-#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/log
-#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/sha1
-#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/snit
-#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/uri
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/base64
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http2.4
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/log
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/sha1
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/snit
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/uri
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/docs
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/{AGREEMENT,FAQ,GNUGPL,INSTALL,remote.help,TODO}
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/{CREDITS,HELP,README}
