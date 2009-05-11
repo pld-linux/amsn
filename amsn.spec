@@ -1,18 +1,17 @@
-# TODO
-# - %lang tags: /usr/lib/amsn/lang/langfr_CA ..
 Summary:	MSN Messenger clone for Linux
 Summary(de.UTF-8):	MSN Messenger-Klon für Linux
 Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
-Version:	0.97
-Release:	1
+Version:	0.97.2
+Release:	0.8
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://dl.sourceforge.net/amsn/%{name}-%{version}.tar.gz
-# Source0-md5:	0ae903f6cac24c042f4ef74b5015ea88
+# Source0-md5:	c6c2e9c016c39dfbae80028a3c745419
 Patch0:		%{name}-desktop.patch
+Patch1:		%{name}-tkcximage.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	libpng-devel
 BuildRequires:	libtiff-devel
@@ -22,11 +21,16 @@ BuildRequires:	tk-devel >= 8.4
 Requires(post,postun):	hicolor-icon-theme
 # IM's convert is needed to display pictures (buddy icons).
 Requires:	ImageMagick
-Requires:	tcl >= 8.4
+Requires:	tcl >= 8.5.7
+Requires:	tcl-bwidget
+Requires:	tcllib
 # MSN Protocol 9 won't let you in without SSL anymore.
 Requires:	tcl-tls
 Requires:	tk >= 8.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		tcl_version		%(rpm -q --qf %{V} tcl-devel | cut -d. -f1,2)
+%define		tcl_sitearch	%{_libdir}/tcl%{tcl_version}
 
 %description
 This is Tcl/Tk clone that implements the Microsoft Messenger (MSN) for
@@ -48,13 +52,39 @@ amsn to klient Microsoft Messengera (MSN) dla Uniksów, Windows i
 Macintosha napisany w Tcl/Tk. Obsługuje przesyłanie plików, grupy i
 wiele więcej możliwości.
 
+%package plugins
+Summary:	Plugins for aMSN
+Group:		Applications/Networking
+URL:		http://amsn.sourceforge.net/plugins.php
+Requires:	%{name} = %{version}-%{release}
+
+%description plugins
+Extra plugins for amsn to enable drawing Ink, send and receive Nudges,
+view the last lines of a recent chat when opening a new one and create
+snapshots with your webcam to use as your display picture.
+
 %prep
 %setup -q
 
 # undos some source files
 find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
+rm -r utils/bwidget1.8.0
+rm -r skins/default/winicons
+
+# for webcam to work these paths need to be added because we move libs around
+%{__sed} -i 's#\.\./libng/plugins#%{tcl_sitearch}/capture/libng/plugins#' utils/linux/capture/libng/grab-ng.c
+%{__sed} -i 's#\.\./libng/contrib-plugins#%{tcl_sitearch}/capture/libng/contrib-plugins#' utils/linux/capture/libng/grab-ng.c
+
+%{__sed} -i 's#mozilla#firefox#' config.tcl
+%{__sed} -i 's#my_filemanager open#xdg-open#' config.tcl
+%{__sed} -i 's#env(HOME) amsn_received#env(HOME) Desktop#' config.tcl
+%{__sed} -i 's# utils/bwidget1.8.0##' Makefile.in
+
+%{__sed} -i 's#set program_dir \[file dirname \[info script\]\]#set program_dir "%{_datadir}/amsn/"#' amsn amsn-remote amsn-remote-CLI
+
 %patch0 -p1
+%patch1 -p2
 
 # MS-DOS executable PE for MS Windows (GUI) Intel 80386 32-bit
 rm -f utils/*/*/*.exe
@@ -66,36 +96,38 @@ rm -f utils/*/*/*.exe
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_iconsdir}/hicolor/,%{_pixmapsdir},%{_desktopdir}}
+install -d $RPM_BUILD_ROOT{%{_iconsdir}/hicolor,%{_pixmapsdir},%{_desktopdir}}
 
-# FIXME: FHS?
 %{__make} install \
-	prefix=$RPM_BUILD_ROOT%{_prefix} \
-	exec_prefix=$RPM_BUILD_ROOT%{_bindir} \
-	dstdir=$RPM_BUILD_ROOT%{_libdir} \
-	slnkdir=$RPM_BUILD_ROOT%{_bindir}
+	DESTDIR=$RPM_BUILD_ROOT
 
-install %{name}.desktop $RPM_BUILD_ROOT%{_desktopdir}/%{name}.desktop
-rm $RPM_BUILD_ROOT%{_libdir}/applications/amsn.desktop
-rm -r $RPM_BUILD_ROOT%{_libdir}/pixmaps
-mv $RPM_BUILD_ROOT%{_libdir}/amsn/desktop-icons/* $RPM_BUILD_ROOT%{_iconsdir}/hicolor
-rm -r $RPM_BUILD_ROOT%{_libdir}/amsn/desktop-icons
-ln -s %{_iconsdir}/hicolor/48x48/apps/%{name}.png $RPM_BUILD_ROOT%{_pixmapsdir}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn $RPM_BUILD_ROOT%{_bindir}/amsn
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote $RPM_BUILD_ROOT%{_bindir}/amsn-remote
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote-CLI $RPM_BUILD_ROOT%{_bindir}/amsn-remote-CLI
 
-for f in amsn{,-remote{,-CLI}}; do
-	rm $RPM_BUILD_ROOT%{_bindir}/$f
-	ln -s ../%{_lib}/%{name}/$f $RPM_BUILD_ROOT%{_bindir}
-done
+#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/base64
+#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http2.4
+#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/log
+#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/sha1
+#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/snit
+#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/uri
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/docs
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/{AGREEMENT,FAQ,GNUGPL,INSTALL,remote.help,TODO}
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/{CREDITS,HELP,README}
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
 
-# remove junk
-rm $RPM_BUILD_ROOT%{_libdir}/amsn/amsn.desktop
-rm $RPM_BUILD_ROOT%{_libdir}/%{name}/lang/LANG-HOWTO
-rm $RPM_BUILD_ROOT%{_libdir}/%{name}/lang/convert.tcl
+install -d $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/linux/* $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/TkCximage $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/webcamsn $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/tcl_siren $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_desktopdir}}/%{name}.desktop
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons/* $RPM_BUILD_ROOT%{_iconsdir}/hicolor
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons
+ln -sf %{_iconsdir}/hicolor/48x48/apps/%{name}.png $RPM_BUILD_ROOT%{_pixmapsdir}
 
 # docs in docs
-rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/docs
-rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/{AGREEMENT,CREDITS,GNUGPL,INSTALL,README,HELP,FAQ,TODO}
-rm -rf $RPM_BUILD_ROOT%{_libdir}/amsn/utils/*/test.tcl
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/*/test.tcl
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -109,76 +141,77 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ GNUGPL HELP README TODO CREDITS
-%attr(755,root,root) %{_bindir}/*
-%dir %{_libdir}/%{name}
-%attr(755,root,root) %{_libdir}/%{name}/amsn
-%attr(755,root,root) %{_libdir}/%{name}/amsn-remote*
+%attr(755,root,root) %{_bindir}/amsn
+%attr(755,root,root) %{_bindir}/amsn-remote
+%attr(755,root,root) %{_bindir}/amsn-remote-CLI
 
-%{_libdir}/%{name}/*.tcl
-%{_libdir}/%{name}/remote.help
-%{_libdir}/%{name}/hotmlog.htm
-# TODO: %lang
-%{_libdir}/%{name}/lang
-%{_libdir}/%{name}/langlist
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/*.tcl
+%{_datadir}/%{name}/hotmlog.htm
 
-%dir %{_libdir}/%{name}/plugins
+# langlist explains the language codes used
+%{_datadir}/%{name}/langlist
+%dir %{_datadir}/%{name}/lang
+%{_datadir}/%{name}/lang/langen
+%lang(sq) %{_datadir}/%{name}/lang/langal
+%lang(ca) %{_datadir}/%{name}/lang/langca
+%lang(ca) %{_datadir}/%{name}/lang/langca_VC
+%lang(cs) %{_datadir}/%{name}/lang/langcs
+%lang(cy) %{_datadir}/%{name}/lang/langcy
+%lang(da) %{_datadir}/%{name}/lang/langda
+%lang(de) %{_datadir}/%{name}/lang/langde
+%lang(et) %{_datadir}/%{name}/lang/langee
+%lang(el) %{_datadir}/%{name}/lang/langel
+%lang(es) %{_datadir}/%{name}/lang/langes
+%lang(eu) %{_datadir}/%{name}/lang/langeu
+%lang(fi) %{_datadir}/%{name}/lang/langfi
+%lang(fr) %{_datadir}/%{name}/lang/langfr
+%lang(fr_CA) %{_datadir}/%{name}/lang/langfr_CA
+%lang(fy) %{_datadir}/%{name}/lang/langfri
+%lang(gl) %{_datadir}/%{name}/lang/langglg
+%lang(el) %{_datadir}/%{name}/lang/langgr2
+%lang(hu) %{_datadir}/%{name}/lang/langhu
+%lang(id) %{_datadir}/%{name}/lang/langid
+%lang(is) %{_datadir}/%{name}/lang/langis
+%lang(it) %{_datadir}/%{name}/lang/langit
+%lang(ko) %{_datadir}/%{name}/lang/langko
+%lang(lt) %{_datadir}/%{name}/lang/langlt
+%lang(mk) %{_datadir}/%{name}/lang/langmk
+%lang(mt) %{_datadir}/%{name}/lang/langmt
+%lang(nl) %{_datadir}/%{name}/lang/langnl
+%lang(nb) %{_datadir}/%{name}/lang/langno
+%lang(oc) %{_datadir}/%{name}/lang/langoc
+%lang(pl) %{_datadir}/%{name}/lang/langpl
+%lang(pt) %{_datadir}/%{name}/lang/langpt
+%lang(pt_BR) %{_datadir}/%{name}/lang/langpt_BR
+%lang(ro) %{_datadir}/%{name}/lang/langro
+%lang(ru) %{_datadir}/%{name}/lang/langru
+%lang(sk) %{_datadir}/%{name}/lang/langsk
+%lang(sl) %{_datadir}/%{name}/lang/langsl
+%lang(sr) %{_datadir}/%{name}/lang/langsr
+%lang(sv) %{_datadir}/%{name}/lang/langsv
+%lang(tr) %{_datadir}/%{name}/lang/langtr
+%lang(zh_CN) %{_datadir}/%{name}/lang/langzh-CN
+%lang(zh_TW) %{_datadir}/%{name}/lang/langzh-TW
 
-%{_libdir}/%{name}/plugins/Nudge
-%{_libdir}/%{name}/plugins/PowerTool
-%{_libdir}/%{name}/plugins/WebcamShooter
-%{_libdir}/%{name}/plugins/inkdraw
-%{_libdir}/%{name}/plugins/remind
-%{_libdir}/%{name}/plugins/winks
+# no ISO 639-1 code present
+%lang(NONE) %{_datadir}/%{name}/lang/langast
 
-%{_libdir}/%{name}/skins
-
-%dir %{_libdir}/%{name}/utils
-%{_libdir}/%{name}/utils/base64
-%{_libdir}/%{name}/utils/bwidget1.8.0
-%{_libdir}/%{name}/utils/combobox
-%{_libdir}/%{name}/utils/contentmanager
-%{_libdir}/%{name}/utils/dpbrowser
-%{_libdir}/%{name}/utils/drawboard
-%{_libdir}/%{name}/utils/framec
-%{_libdir}/%{name}/utils/http2.4
-%{_libdir}/%{name}/utils/log
-%{_libdir}/%{name}/utils/pixmapmenu
-%{_libdir}/%{name}/utils/pixmapscroll
-%{_libdir}/%{name}/utils/scalable-bg
-%{_libdir}/%{name}/utils/sexytile
-%{_libdir}/%{name}/utils/sha1
-%{_libdir}/%{name}/utils/snit
-%{_libdir}/%{name}/utils/uri
-
-%dir %{_libdir}/%{name}/utils/TkCximage
-%attr(755,root,root) %{_libdir}/%{name}/utils/TkCximage/*.so
-%{_libdir}/%{name}/utils/TkCximage/pkgIndex.tcl
-
-%dir %{_libdir}/%{name}/utils/linux
-%dir %{_libdir}/%{name}/utils/linux/capture
-%{_libdir}/%{name}/utils/linux/capture/pkgIndex.tcl
-%attr(755,root,root) %{_libdir}/%{name}/utils/linux/capture/*.so
-
-%dir %{_libdir}/%{name}/utils/linux/capture/libng
-%dir %{_libdir}/%{name}/utils/linux/capture/libng/plugins
-%attr(755,root,root) %{_libdir}/%{name}/utils/linux/capture/libng/plugins/*.so
-
-%dir %{_libdir}/%{name}/utils/linux/linflash
-%attr(755,root,root) %{_libdir}/%{name}/utils/linux/linflash/*.so
-%{_libdir}/%{name}/utils/linux/linflash/pkgIndex.tcl
-
-%dir %{_libdir}/%{name}/utils/linux/traydock
-%attr(755,root,root) %{_libdir}/%{name}/utils/linux/traydock/libtray.so
-%{_libdir}/%{name}/utils/linux/traydock/pkgIndex.tcl
-
-%dir %{_libdir}/%{name}/utils/tcl_siren
-%{_libdir}/%{name}/utils/tcl_siren/pkgIndex.tcl
-%attr(755,root,root) %{_libdir}/%{name}/utils/tcl_siren/*.so
-
-%dir %{_libdir}/%{name}/utils/webcamsn
-%{_libdir}/%{name}/utils/webcamsn/pkgIndex.tcl
-%attr(755,root,root) %{_libdir}/%{name}/utils/webcamsn/*.so
+%dir %{_datadir}/%{name}/plugins
+%{_datadir}/%{name}/skins
+%{_datadir}/%{name}/utils
 
 %{_iconsdir}/hicolor/*/apps/*.png
 %{_desktopdir}/%{name}.desktop
 %{_pixmapsdir}/%{name}.png
+
+%dir %{tcl_sitearch}/*
+%{tcl_sitearch}/*/*.tcl
+%attr(755,root,root) %{tcl_sitearch}/*/*.so
+%dir %{tcl_sitearch}/capture/libng
+%dir %{tcl_sitearch}/capture/libng/plugins
+%attr(755,root,root) %{tcl_sitearch}/capture/libng/plugins/*.so
+
+%files plugins
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/plugins/*
