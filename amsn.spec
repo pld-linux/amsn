@@ -143,7 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc FAQ GNUGPL HELP README TODO CREDITS
+%doc FAQ HELP README TODO CREDITS
 %attr(755,root,root) %{_bindir}/amsn
 %attr(755,root,root) %{_bindir}/amsn-remote
 %attr(755,root,root) %{_bindir}/amsn-remote-CLI
