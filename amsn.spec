@@ -90,9 +90,12 @@ rm -r skins/default/winicons
 rm -f utils/*/*/*.exe
 
 %build
+# NOTE: enable debug allows us to keep debug symbols in -debuginfo package
 %configure \
+	--enable-debug \
 	CFLAGS="%{rpmcflags}"
-%{__make}
+%{__make} \
+	verbose=yes
 
 %install
 rm -rf $RPM_BUILD_ROOT
