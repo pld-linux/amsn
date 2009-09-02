@@ -4,7 +4,7 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.97.2
-Release:	3
+Release:	4
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
@@ -24,8 +24,8 @@ Requires(post,postun):	hicolor-icon-theme
 # IM's convert is needed to display pictures (buddy icons).
 Requires:	ImageMagick
 Requires:	tcl >= 8.5.7
-Requires:	tcl-bwidget
 Requires:	tcllib
+Requires:	tk-BWidget >= 1.8.0-2
 # MSN Protocol 9 won't let you in without SSL anymore.
 Requires:	tcl-tls
 Requires:	tk >= 8.4
