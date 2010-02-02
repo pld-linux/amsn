@@ -1,0 +1,11 @@
+--- amsn-0.98.1/Makefile.in	2009-10-19 20:52:33.000000000 +0200
++++ amsn-0.98.1-dud/Makefile.in	2010-02-02 22:30:03.701671244 +0100
+@@ -14,7 +14,7 @@ FILES_TO_INSTALL := *.tcl hotmlog.htm am
+ FILES_TO_INSTALL += $(doc_files)
+ FILES_TO_INSTALL += desktop-icons lang skins utils/des utils/base64 utils/drawboard utils/framec utils/http
+ FILES_TO_INSTALL += utils/pixmapscroll utils/pixmapmenu utils/contentmanager
+-FILES_TO_INSTALL += utils/scalable-bg utils/sha1 utils/snit utils/BWidget-1.9.0 utils/dpbrowser
++FILES_TO_INSTALL += utils/scalable-bg utils/sha1 utils/snit utils/dpbrowser
+ FILES_TO_INSTALL += plugins utils/sexytile
+ FILES_TO_INSTALL += utils/log utils/uri utils/combobox utils/voipcontrols
+ 
