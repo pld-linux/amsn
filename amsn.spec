@@ -3,16 +3,17 @@ Summary(de.UTF-8):	MSN Messenger-Klon für Linux
 Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
-Version:	0.97.2
-Release:	4
+Version:	0.98.1
+Release:	1
 Epoch:		0
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://dl.sourceforge.net/amsn/%{name}-%{version}.tar.gz
-# Source0-md5:	c6c2e9c016c39dfbae80028a3c745419
+# Source0-md5:	8c608673a4e920b83cc9f41c2cb837dc
 Patch0:		%{name}-desktop.patch
-Patch1:		%{name}-tkcximage.patch
-Patch2:		%{name}-paths.patch
+Patch1:		%{name}-paths.patch
+Patch2:		%{name}-libpng.patch
+Patch3:		%{name}-bwidget.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	libpng-devel
 BuildRequires:	libtiff-devel
@@ -68,7 +69,7 @@ snapshots with your webcam to use as your display picture.
 # undos some source files
 find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
-rm -r utils/bwidget1.8.0
+rm -r utils/BWidget-1.9.0
 rm -r skins/default/winicons
 
 # for webcam to work these paths need to be added because we move libs around
@@ -83,8 +84,9 @@ rm -r skins/default/winicons
 %{__sed} -i 's#set program_dir \[file dirname \[info script\]\]#set program_dir "%{_datadir}/amsn/"#' amsn amsn-remote amsn-remote-CLI
 
 %patch0 -p1
-%patch1 -p2
+%patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 # MS-DOS executable PE for MS Windows (GUI) Intel 80386 32-bit
 rm -f utils/*/*/*.exe
@@ -109,7 +111,6 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote $RPM_BUILD_ROOT%{_bindir}/amsn
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote-CLI $RPM_BUILD_ROOT%{_bindir}/amsn-remote-CLI
 
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/base64
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http2.4
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/log
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/sha1
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/snit
@@ -177,7 +178,9 @@ rm -rf $RPM_BUILD_ROOT
 %lang(id) %{_datadir}/%{name}/lang/langid
 %lang(is) %{_datadir}/%{name}/lang/langis
 %lang(it) %{_datadir}/%{name}/lang/langit
+%lang(ja) %{_datadir}/%{name}/lang/langja
 %lang(ko) %{_datadir}/%{name}/lang/langko
+%lang(ku) %{_datadir}/%{name}/lang/langku
 %lang(lt) %{_datadir}/%{name}/lang/langlt
 %lang(mk) %{_datadir}/%{name}/lang/langmk
 %lang(mt) %{_datadir}/%{name}/lang/langmt
@@ -194,6 +197,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(sr) %{_datadir}/%{name}/lang/langsr
 %lang(sv) %{_datadir}/%{name}/lang/langsv
 %lang(tr) %{_datadir}/%{name}/lang/langtr
+%lang(vn) %{_datadir}/%{name}/lang/langvn
 %lang(zh_CN) %{_datadir}/%{name}/lang/langzh-CN
 %lang(zh_TW) %{_datadir}/%{name}/lang/langzh-TW
 
