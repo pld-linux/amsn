@@ -15,12 +15,18 @@ Patch1:		%{name}-paths.patch
 Patch2:		%{name}-libpng.patch
 Patch3:		%{name}-bwidget.patch
 URL:		http://www.amsn-project.net/
+BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
-BuildRequires:	libtiff-devel
+BuildRequires:	libstdc++-devel
+BuildRequires:	pkgconfig
+BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.517
 BuildRequires:	sed >= 4.0
 BuildRequires:	tcl-devel >= 8.4
 BuildRequires:	tk-devel >= 8.4
+BuildRequires:	which
+BuildRequires:	xorg-lib-libICE-devel
+BuildRequires:	xorg-lib-libSM-devel
 Requires(post,postun):	hicolor-icon-theme
 # IM's convert is needed to display pictures (buddy icons).
 Requires:	ImageMagick
@@ -82,6 +88,8 @@ rm -r skins/default/winicons
 %{__sed} -i 's# utils/bwidget1.8.0##' Makefile.in
 
 %{__sed} -i 's#set program_dir \[file dirname \[info script\]\]#set program_dir "%{_datadir}/amsn/"#' amsn amsn-remote amsn-remote-CLI
+
+%{__sed} -i 's#`locate .*`##' configure
 
 %patch0 -p1
 %patch1 -p1
