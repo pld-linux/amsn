@@ -1,14 +1,15 @@
---- amsn-0.97.2/amsn.desktop~	2008-07-10 23:54:42.000000000 +0300
-+++ amsn-0.97.2/amsn.desktop	2009-05-11 18:54:01.216674578 +0300
-@@ -6,9 +6,12 @@
- Comment=MSN Messenger for Linux
- Comment[fr]=MSN Messenger pour Linux
- Comment[de]=MSN Messenger für Linux
-+Comment[nb]=MSN Messenger for Linux
- Comment[nl]=MSN Messenger voor Linux
- Comment[no]=MSN Messenger for Linux
- Comment[es]=MSN Messenger para Linux
-+Comment[pl]=MSN Messenger dla Linuksa
+--- amsn-0.98.1/amsn.desktop	2008-10-27 10:18:47.000000000 +0100
++++ amsn-0.98.1-dud/amsn.desktop	2010-02-02 22:01:55.851840436 +0100
+@@ -7,10 +7,13 @@ GenericName=MSN Messenger for Linux
+ GenericName[de]=MSN Messenger für Linux
+ GenericName[es]=MSN Messenger para Linux
+ GenericName[fr]=MSN Messenger pour Linux
++GenericName[nb]=MSN Messenger for Linux
+ GenericName[nl]=MSN Messenger voor Linux
+ GenericName[no]=MSN Messenger for Linux
++GenericName[pl]=MSN Messenger dla Linuksa
+ GenericName[sv]=MSN Messenger för Linux
+ GenericName[tr]=MSN Messenger Programı
  Terminal=false
  Type=Application
  StartupNotify=true
