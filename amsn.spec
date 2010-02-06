@@ -16,7 +16,7 @@ Patch2:		%{name}-libpng.patch
 Patch3:		%{name}-bwidget.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	libjpeg-devel
-BuildRequires:	libpng-devel
+BuildRequires:	libpng-devel >= 2:1.4
 BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpm-pythonprov
