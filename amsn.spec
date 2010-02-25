@@ -45,6 +45,13 @@ Requires:	tcllib
 Requires:	tk >= 8.4
 Requires:	tk-BWidget >= 1.8.0-2
 Requires:	xdg-utils
+%if 0
+# new deps
+Requires:	tcl-snack
+Requires:	tclsoap
+Requires:	tcltls
+Requires:	tkdnd
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		find_lang 	%{SOURCE1} %{buildroot}
@@ -90,6 +97,7 @@ rm -r utils/BWidget-1.9.0
 rm -r skins/default/winicons
 rm -r skins/"Dark Matter 4.0"/winicons
 rm -r plugins/music/MusicWin
+rm plugins/music/display_and_send.scpt
 
 # for webcam to work these paths need to be added because we move libs around
 %{__sed} -i 's#\.\./libng/plugins#%{tcl_sitearch}/capture/libng/plugins#' utils/linux/capture/libng/grab-ng.c
@@ -143,6 +151,7 @@ rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
 
 install -d $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/linux/* $RPM_BUILD_ROOT%{tcl_sitearch}
+rmdir $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/linux
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/TkCximage $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/webcamsn $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/tcl_siren $RPM_BUILD_ROOT%{tcl_sitearch}
@@ -241,7 +250,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/plugins/music/*.xml
 %{_datadir}/%{name}/plugins/music/*.txt
 %{_datadir}/%{name}/plugins/music/info*
-%{_datadir}/%{name}/plugins/music/display_and_send.scpt
 %{_datadir}/%{name}/plugins/music/pixmaps
 
 %dir %{_datadir}/%{name}/plugins/remind
