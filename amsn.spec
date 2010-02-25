@@ -1,7 +1,4 @@
 # TODO
-# - farsight.so in %{_datadir}!
-# - asyncresolver.so in %{_datadir}!
-# - tclISF.so in %{_datadir}!
 # - Requires: /bin/bash /bin/sh /usr/bin/env /usr/bin/perl
 # - mv languages instead handling specially in find-lang.sh, send to upstream
 Summary:	MSN Messenger clone for Linux
@@ -10,7 +7,7 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.98.1
-Release:	2.1
+Release:	2.3
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://downloads.sourceforge.net/amsn/%{name}-%{version}.tar.gz
@@ -21,9 +18,11 @@ Patch1:		%{name}-paths.patch
 Patch2:		%{name}-libpng.patch
 Patch3:		%{name}-bwidget.patch
 URL:		http://www.amsn-project.net/
+BuildRequires:	farsight2-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 2:1.4
 BuildRequires:	libstdc++-devel
+BuildRequires:	libv4l-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.517
@@ -126,6 +125,7 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote $RPM_BUILD_ROOT%{_bindir}/amsn
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote-CLI $RPM_BUILD_ROOT%{_bindir}/amsn-remote-CLI
 
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/base64
+#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/log
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/sha1
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/snit
@@ -140,10 +140,15 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/linux/* $RPM_BUILD_ROOT%{tcl_sitearc
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/TkCximage $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/webcamsn $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/tcl_siren $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/tclISF $RPM_BUILD_ROOT%{tcl_sitearch}
+#mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/gupnp $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/farsight $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/asyncresolver $RPM_BUILD_ROOT%{tcl_sitearch}
+
 mv $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_desktopdir}}/%{name}.desktop
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons/* $RPM_BUILD_ROOT%{_iconsdir}/hicolor
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons
-ln -sf %{_iconsdir}/hicolor/48x48/apps/%{name}.png $RPM_BUILD_ROOT%{_pixmapsdir}
+rm $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
 
 # docs in docs
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/*/test.tcl
@@ -182,7 +187,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_iconsdir}/hicolor/*/apps/*.png
 %{_desktopdir}/%{name}.desktop
-%{_pixmapsdir}/%{name}.png
 
 %dir %{tcl_sitearch}/*
 %{tcl_sitearch}/*/*.tcl
