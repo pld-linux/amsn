@@ -1,5 +1,5 @@
 # TODO
-# - Requires: /bin/bash /bin/sh /usr/bin/env /usr/bin/perl
+# - Requires: /bin/bash /bin/sh /usr/bin/env /usr/bin/perl  ... etc in music plugin, subpackage it?
 # - mv languages instead handling specially in find-lang.sh, send to upstream
 Summary:	MSN Messenger clone for Linux
 Summary(de.UTF-8):	MSN Messenger-Klon für Linux
@@ -7,7 +7,7 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.98.1
-Release:	2.4
+Release:	2.6
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://downloads.sourceforge.net/amsn/%{name}-%{version}.tar.gz
@@ -21,6 +21,7 @@ Patch4:		%{name}-no-exact-http.patch
 Patch5:		%{name}-songbird-exception.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	farsight2-devel
+BuildRequires:	gupnp-igd-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 2:1.4
 BuildRequires:	libstdc++-devel
@@ -130,7 +131,7 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote $RPM_BUILD_ROOT%{_bindir}/amsn
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote-CLI $RPM_BUILD_ROOT%{_bindir}/amsn-remote-CLI
 
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/base64
-#rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/log
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/sha1
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/snit
@@ -146,7 +147,7 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/TkCximage $RPM_BUILD_ROOT%{tcl_sitea
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/webcamsn $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/tcl_siren $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/tclISF $RPM_BUILD_ROOT%{tcl_sitearch}
-#mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/gupnp $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/gupnp $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/farsight $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/asyncresolver $RPM_BUILD_ROOT%{tcl_sitearch}
 
