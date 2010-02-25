@@ -97,7 +97,7 @@ rm -r utils/BWidget-1.9.0
 rm -r skins/default/winicons
 rm -r skins/"Dark Matter 4.0"/winicons
 rm -r plugins/music/MusicWin
-rm plugins/music/display_and_send.scpt
+rm plugins/music/*.scpt
 
 # for webcam to work these paths need to be added because we move libs around
 %{__sed} -i 's#\.\./libng/plugins#%{tcl_sitearch}/capture/libng/plugins#' utils/linux/capture/libng/grab-ng.c
