@@ -10,10 +10,10 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.98.1
-Release:	2
+Release:	2.1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://dl.sourceforge.net/amsn/%{name}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/amsn/%{name}-%{version}.tar.gz
 # Source0-md5:	8c608673a4e920b83cc9f41c2cb837dc
 Source1:	find-lang.sh
 Patch0:		%{name}-desktop.patch
@@ -85,6 +85,8 @@ find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
 rm -r utils/BWidget-1.9.0
 rm -r skins/default/winicons
+rm -r skins/"Dark Matter 4.0"/winicons
+rm -r plugins/music/MusicWin
 
 # for webcam to work these paths need to be added because we move libs around
 %{__sed} -i 's#\.\./libng/plugins#%{tcl_sitearch}/capture/libng/plugins#' utils/linux/capture/libng/grab-ng.c
@@ -95,7 +97,7 @@ rm -r skins/default/winicons
 %{__sed} -i 's#env(HOME) amsn_received#env(HOME) Desktop#' config.tcl
 %{__sed} -i 's# utils/bwidget1.8.0##' Makefile.in
 
-%{__sed} -i 's#set program_dir \[file dirname \[info script\]\]#set program_dir "%{_datadir}/amsn/"#' amsn amsn-remote amsn-remote-CLI
+%{__sed} -i 's#set program_dir \[file dirname \[info script\]\]#set program_dir "%{_datadir}/%{name}/"#' amsn amsn-remote amsn-remote-CLI
 
 %{__sed} -i 's#`locate .*`##' configure
 
@@ -103,9 +105,6 @@ rm -r skins/default/winicons
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-
-# MS-DOS executable PE for MS Windows (GUI) Intel 80386 32-bit
-rm -f utils/*/*/*.exe
 
 %build
 # NOTE: enable debug allows us to keep debug symbols in -debuginfo package
@@ -192,6 +191,55 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{tcl_sitearch}/capture/libng/plugins
 %attr(755,root,root) %{tcl_sitearch}/capture/libng/plugins/*.so
 
-%files plugins -f %{name}.lang
+%files plugins -f %{name}-plugins.lang
 %defattr(644,root,root,755)
-%{_datadir}/%{name}/plugins/*
+%dir %{_datadir}/%{name}/plugins/ColoredNicks
+%{_datadir}/%{name}/plugins/ColoredNicks/*.tcl
+%{_datadir}/%{name}/plugins/ColoredNicks/*.xml
+
+%dir %{_datadir}/%{name}/plugins/MSNGameTTT
+%{_datadir}/%{name}/plugins/MSNGameTTT/*.tcl
+%{_datadir}/%{name}/plugins/MSNGameTTT/*.xml
+%{_datadir}/%{name}/plugins/MSNGameTTT/pixmaps
+
+%dir %{_datadir}/%{name}/plugins/SearchContact
+%{_datadir}/%{name}/plugins/SearchContact/*.tcl
+%{_datadir}/%{name}/plugins/SearchContact/*.xml
+%{_datadir}/%{name}/plugins/SearchContact/pixmaps
+
+%dir %{_datadir}/%{name}/plugins/WebcamShooter
+%{_datadir}/%{name}/plugins/WebcamShooter/*.tcl
+%{_datadir}/%{name}/plugins/WebcamShooter/*.xml
+
+%dir %{_datadir}/%{name}/plugins/Notes
+%{_datadir}/%{name}/plugins/Notes/*.tcl
+%{_datadir}/%{name}/plugins/Notes/*.xml
+
+%dir %{_datadir}/%{name}/plugins/Nudge
+%{_datadir}/%{name}/plugins/Nudge/*.tcl
+%{_datadir}/%{name}/plugins/Nudge/*.xml
+%{_datadir}/%{name}/plugins/Nudge/*.wav
+
+%dir %{_datadir}/%{name}/plugins/inkdraw
+%{_datadir}/%{name}/plugins/inkdraw/*.tcl
+%{_datadir}/%{name}/plugins/inkdraw/*.xml
+%{_datadir}/%{name}/plugins/inkdraw/pixmaps
+%{_datadir}/%{name}/plugins/inkdraw/pencils
+
+%dir %{_datadir}/%{name}/plugins/music
+%{_datadir}/%{name}/plugins/music/*.tcl
+%{_datadir}/%{name}/plugins/music/*.xml
+%{_datadir}/%{name}/plugins/music/*.txt
+%{_datadir}/%{name}/plugins/music/info*
+%{_datadir}/%{name}/plugins/music/display_and_send.scpt
+%{_datadir}/%{name}/plugins/music/pixmaps
+
+%dir %{_datadir}/%{name}/plugins/remind
+%{_datadir}/%{name}/plugins/remind/*.tcl
+%{_datadir}/%{name}/plugins/remind/*.xml
+
+%dir %{_datadir}/%{name}/plugins/winks
+%{_datadir}/%{name}/plugins/winks/*.tcl
+%{_datadir}/%{name}/plugins/winks/*.xml
+%{_datadir}/%{name}/plugins/winks/*.txt
+%{_datadir}/%{name}/plugins/winks/pixmaps
