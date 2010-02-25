@@ -1,3 +1,9 @@
+# TODO
+# - farsight.so in %{_datadir}!
+# - asyncresolver.so in %{_datadir}!
+# - tclISF.so in %{_datadir}!
+# - Requires: /bin/bash /bin/sh /usr/bin/env /usr/bin/perl
+# - mv languages instead handling specially in find-lang.sh, send to upstream
 Summary:	MSN Messenger clone for Linux
 Summary(de.UTF-8):	MSN Messenger-Klon für Linux
 Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
@@ -5,11 +11,11 @@ Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.98.1
 Release:	2
-Epoch:		0
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://dl.sourceforge.net/amsn/%{name}-%{version}.tar.gz
 # Source0-md5:	8c608673a4e920b83cc9f41c2cb837dc
+Source1:	find-lang.sh
 Patch0:		%{name}-desktop.patch
 Patch1:		%{name}-paths.patch
 Patch2:		%{name}-libpng.patch
@@ -37,6 +43,8 @@ Requires:	tk-BWidget >= 1.8.0-2
 Requires:	tcl-tls
 Requires:	tk >= 8.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		find_lang 	%{SOURCE1} %{buildroot}
 
 %description
 This is Tcl/Tk clone that implements the Microsoft Messenger (MSN) for
@@ -141,6 +149,11 @@ ln -sf %{_iconsdir}/hicolor/48x48/apps/%{name}.png $RPM_BUILD_ROOT%{_pixmapsdir}
 # docs in docs
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/*/test.tcl
 
+%find_lang %{name}
+
+grep /plugins/ %{name}.lang > %{name}-plugins.lang
+sed -i -e '/plugins/d' %{name}.lang
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -150,7 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun
 %update_icon_cache hicolor
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc FAQ HELP README TODO CREDITS
 %attr(755,root,root) %{_bindir}/amsn
@@ -163,54 +176,6 @@ rm -rf $RPM_BUILD_ROOT
 
 # langlist explains the language codes used
 %{_datadir}/%{name}/langlist
-%dir %{_datadir}/%{name}/lang
-%{_datadir}/%{name}/lang/langen
-%lang(sq) %{_datadir}/%{name}/lang/langal
-%lang(ca) %{_datadir}/%{name}/lang/langca
-%lang(ca) %{_datadir}/%{name}/lang/langca_VC
-%lang(cs) %{_datadir}/%{name}/lang/langcs
-%lang(cy) %{_datadir}/%{name}/lang/langcy
-%lang(da) %{_datadir}/%{name}/lang/langda
-%lang(de) %{_datadir}/%{name}/lang/langde
-%lang(et) %{_datadir}/%{name}/lang/langee
-%lang(el) %{_datadir}/%{name}/lang/langel
-%lang(es) %{_datadir}/%{name}/lang/langes
-%lang(eu) %{_datadir}/%{name}/lang/langeu
-%lang(fi) %{_datadir}/%{name}/lang/langfi
-%lang(fr) %{_datadir}/%{name}/lang/langfr
-%lang(fr_CA) %{_datadir}/%{name}/lang/langfr_CA
-%lang(fy) %{_datadir}/%{name}/lang/langfri
-%lang(gl) %{_datadir}/%{name}/lang/langglg
-%lang(el) %{_datadir}/%{name}/lang/langgr2
-%lang(hu) %{_datadir}/%{name}/lang/langhu
-%lang(id) %{_datadir}/%{name}/lang/langid
-%lang(is) %{_datadir}/%{name}/lang/langis
-%lang(it) %{_datadir}/%{name}/lang/langit
-%lang(ja) %{_datadir}/%{name}/lang/langja
-%lang(ko) %{_datadir}/%{name}/lang/langko
-%lang(ku) %{_datadir}/%{name}/lang/langku
-%lang(lt) %{_datadir}/%{name}/lang/langlt
-%lang(mk) %{_datadir}/%{name}/lang/langmk
-%lang(mt) %{_datadir}/%{name}/lang/langmt
-%lang(nl) %{_datadir}/%{name}/lang/langnl
-%lang(nb) %{_datadir}/%{name}/lang/langno
-%lang(oc) %{_datadir}/%{name}/lang/langoc
-%lang(pl) %{_datadir}/%{name}/lang/langpl
-%lang(pt) %{_datadir}/%{name}/lang/langpt
-%lang(pt_BR) %{_datadir}/%{name}/lang/langpt_BR
-%lang(ro) %{_datadir}/%{name}/lang/langro
-%lang(ru) %{_datadir}/%{name}/lang/langru
-%lang(sk) %{_datadir}/%{name}/lang/langsk
-%lang(sl) %{_datadir}/%{name}/lang/langsl
-%lang(sr) %{_datadir}/%{name}/lang/langsr
-%lang(sv) %{_datadir}/%{name}/lang/langsv
-%lang(tr) %{_datadir}/%{name}/lang/langtr
-%lang(vn) %{_datadir}/%{name}/lang/langvn
-%lang(zh_CN) %{_datadir}/%{name}/lang/langzh-CN
-%lang(zh_TW) %{_datadir}/%{name}/lang/langzh-TW
-
-# no ISO 639-1 code present
-%lang(NONE) %{_datadir}/%{name}/lang/langast
 
 %dir %{_datadir}/%{name}/plugins
 %{_datadir}/%{name}/skins
@@ -227,6 +192,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{tcl_sitearch}/capture/libng/plugins
 %attr(755,root,root) %{tcl_sitearch}/capture/libng/plugins/*.so
 
-%files plugins
+%files plugins -f %{name}.lang
 %defattr(644,root,root,755)
 %{_datadir}/%{name}/plugins/*
