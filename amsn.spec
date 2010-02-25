@@ -7,7 +7,7 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.98.1
-Release:	2.3
+Release:	2.4
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://downloads.sourceforge.net/amsn/%{name}-%{version}.tar.gz
@@ -17,6 +17,8 @@ Patch0:		%{name}-desktop.patch
 Patch1:		%{name}-paths.patch
 Patch2:		%{name}-libpng.patch
 Patch3:		%{name}-bwidget.patch
+Patch4:		%{name}-no-exact-http.patch
+Patch5:		%{name}-songbird-exception.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	farsight2-devel
 BuildRequires:	libjpeg-devel
@@ -36,11 +38,12 @@ Requires(post,postun):	hicolor-icon-theme
 # IM's convert is needed to display pictures (buddy icons).
 Requires:	ImageMagick
 Requires:	tcl >= 8.5.7
-Requires:	tcllib
-Requires:	tk-BWidget >= 1.8.0-2
 # MSN Protocol 9 won't let you in without SSL anymore.
 Requires:	tcl-tls
+Requires:	tcllib
 Requires:	tk >= 8.4
+Requires:	tk-BWidget >= 1.8.0-2
+Requires:	xdg-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		find_lang 	%{SOURCE1} %{buildroot}
@@ -104,6 +107,8 @@ rm -r plugins/music/MusicWin
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 # NOTE: enable debug allows us to keep debug symbols in -debuginfo package
@@ -148,7 +153,7 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/asyncresolver $RPM_BUILD_ROOT%{tcl_s
 mv $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_desktopdir}}/%{name}.desktop
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons/* $RPM_BUILD_ROOT%{_iconsdir}/hicolor
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons
-rm $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
+rm $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
 # docs in docs
 rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/*/test.tcl
