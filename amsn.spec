@@ -19,6 +19,7 @@ Patch2:		%{name}-libpng.patch
 Patch3:		%{name}-bwidget.patch
 Patch4:		%{name}-no-exact-http.patch
 Patch5:		%{name}-songbird-exception.patch
+Patch6:		%{name}-disable-autoupdate.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	farsight2-devel
 BuildRequires:	gupnp-igd-devel
@@ -121,6 +122,7 @@ rm -r skins/*
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 # NOTE: enable debug allows us to keep debug symbols in -debuginfo package
