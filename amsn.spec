@@ -7,7 +7,7 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.98.1
-Release:	2.6
+Release:	3
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://downloads.sourceforge.net/amsn/%{name}-%{version}.tar.gz
@@ -40,6 +40,7 @@ Requires(post,postun):	hicolor-icon-theme
 Requires:	ImageMagick
 Requires:	tcl >= 8.5.7
 # MSN Protocol 9 won't let you in without SSL anymore.
+Requires:	%{name}-skin
 Requires:	tcl-tls
 Requires:	tcllib
 Requires:	tk >= 8.4
@@ -94,10 +95,11 @@ snapshots with your webcam to use as your display picture.
 find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
 rm -r utils/BWidget-1.9.0
-rm -r skins/default/winicons
-rm -r skins/"Dark Matter 4.0"/winicons
 rm -r plugins/music/MusicWin
 rm plugins/music/*.scpt
+
+# skins in amsn-skins.spec
+rm -r skins/*
 
 # for webcam to work these paths need to be added because we move libs around
 %{__sed} -i 's#\.\./libng/plugins#%{tcl_sitearch}/capture/libng/plugins#' utils/linux/capture/libng/grab-ng.c
@@ -197,7 +199,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/langlist
 
 %dir %{_datadir}/%{name}/plugins
-%{_datadir}/%{name}/skins
+%dir %{_datadir}/%{name}/skins
 %{_datadir}/%{name}/utils
 
 %{_iconsdir}/hicolor/*/apps/*.png
