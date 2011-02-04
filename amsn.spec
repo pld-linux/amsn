@@ -33,6 +33,7 @@ BuildRequires:	tk-devel >= 8.4
 BuildRequires:	which
 BuildRequires:	xorg-lib-libICE-devel
 BuildRequires:	xorg-lib-libSM-devel
+Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 # default skin is always needed, as it contains images if extra skin misses something
 Requires:	%{name}-skin-default
