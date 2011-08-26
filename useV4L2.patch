@@ -1,0 +1,84 @@
+--- amsn/configure.ac	2011/04/08 17:08:27	12314
++++ amsn/configure.ac	2011/04/12 00:20:59	12315
+@@ -489,6 +489,11 @@
+       libv4l2 >= 0.5.0,
+       HAVE_LIBV4L=yes,HAVE_LIBV4L=no)
+   fi
++  AC_CHECK_HEADERS(linux/videodev.h,HAVE_LIBV4L=yes,HAVE_LIBV4L=no)
++  AC_CHECK_HEADERS(linux/videodev2.h,HAVE_LIBV4L2=yes,HAVE_LIBV4L2=no)
++  if test x"$v4l2" = x"yes" ; then
++    HAVE_LIBV4L=yes
++  fi
+   AC_SUBST(HAVE_LIBV4L)
+ 
+   AC_ARG_ENABLE([upnp],
+--- amsn/utils/linux/capture/capture.h	2011/04/08 17:08:27	12314
++++ amsn/utils/linux/capture/capture.h	2011/04/12 00:20:59	12315
+@@ -30,11 +30,13 @@
+ 
+ #include "config.h"
+ 
++/*
+ #ifdef HAVE_SYS_VIDEODEV2_H
+ #   include <sys/videodev2.h>
+ #else
+ #   include <linux/videodev.h>
+ #endif
++*/
+ 
+ #include "grab-ng.h"
+ 
+--- amsn/configure	2010/06/17 00:31:07	12053
++++ amsn/configure	2011/04/12 00:43:13	12317
+@@ -597,6 +605,7 @@
+ HAVE_GUPNP
+ GUPNP_LIBS
+ GUPNP_CFLAGS
++HAVE_LIBV4L2
+ HAVE_LIBV4L
+ LIBV4L_LIBS
+ LIBV4L_CFLAGS
+@@ -5688,6 +5697,35 @@
+ 	HAVE_LIBV4L=yes
+ fi
+   fi
++  for ac_header in linux/videodev.h
++do :
++  ac_fn_c_check_header_mongrel "$LINENO" "linux/videodev.h" "ac_cv_header_linux_videodev_h" "$ac_includes_default"
++if test "x$ac_cv_header_linux_videodev_h" = xyes; then :
++  cat >>confdefs.h <<_ACEOF
++#define HAVE_LINUX_VIDEODEV_H 1
++_ACEOF
++ HAVE_LIBV4L=yes
++else
++  HAVE_LIBV4L=no
++fi
++
++done
++
++  for ac_header in linux/videodev2.h
++do :
++  ac_fn_c_check_header_mongrel "$LINENO" "linux/videodev2.h" "ac_cv_header_linux_videodev2_h" "$ac_includes_default"
++if test "x$ac_cv_header_linux_videodev2_h" = xyes; then :
++  cat >>confdefs.h <<_ACEOF
++#define HAVE_LINUX_VIDEODEV2_H 1
++_ACEOF
++ HAVE_LIBV4L2=yes
++else
++  HAVE_LIBV4L2=no
++fi
++
++done
++
++
+ 
+ 
+   # Check whether --enable-upnp was given.
+@@ -7058,6 +7124,7 @@
+     STATIC       : $STATIC
+     FARSIGHT     : $HAVE_FARSIGHT
+     LIBV4L       : $HAVE_LIBV4L
++    LIBV4L2      : $HAVE_LIBV4L2
+     GUPNP-IGD    : $HAVE_GUPNP
+ 
+ EOF
