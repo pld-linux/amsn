@@ -1,7 +1,6 @@
 # TODO
 # - Requires: /bin/bash /bin/sh /usr/bin/env /usr/bin/perl  ... etc in music plugin, subpackage it?
 # - use mv for language codes fix, instead handling specially in find-lang.sh, send to upstream
-# - use ca-certificatesc
 Summary:	MSN Messenger clone for Linux
 Summary(de.UTF-8):	MSN Messenger-Klon für Linux
 Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
@@ -18,6 +17,7 @@ Patch0:		%{name}-desktop.patch
 Patch1:		%{name}-paths.patch
 Patch2:		useV4L2.patch
 Patch3:		%{name}-bwidget.patch
+Patch4:		ca-certificates.patch
 Patch6:		%{name}-disable-autoupdate.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	farsight2-devel
@@ -41,6 +41,7 @@ Requires(post,postun):	hicolor-icon-theme
 Requires:	%{name}-skin-default
 # IM's convert is needed to display pictures (buddy icons).
 Requires:	ImageMagick
+Requires:	ca-certificates-update
 Requires:	tcl >= 8.5.7
 # MSN Protocol 9 won't let you in without SSL anymore.
 Requires:	tcl-tls
@@ -53,7 +54,6 @@ Obsoletes:	amsn-plugin-chameleon
 # new deps
 Requires:	tcl-snack
 Requires:	tclsoap
-Requires:	tcltls
 Requires:	tkdnd
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -97,13 +97,13 @@ snapshots with your webcam to use as your display picture.
 # undos some source files
 find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 
-rm -r utils/BWidget-1.9.0
-rm -r plugins/music/MusicWin
-rm plugins/music/*.scpt
-rm plugins/amsnplus/snapshot
+%{__rm} -r utils/BWidget-1.9.0
+%{__rm} -r plugins/music/MusicWin
+%{__rm} plugins/music/*.scpt
+%{__rm} plugins/amsnplus/snapshot
 
 # skins in amsn-skins.spec
-rm -r skins/*
+%{__rm} -r skins/*
 
 # for webcam to work these paths need to be added because we move libs around
 %{__sed} -i 's#\.\./libng/plugins#%{tcl_sitearch}/capture/libng/plugins#' utils/linux/capture/libng/grab-ng.c
@@ -122,6 +122,7 @@ rm -r skins/*
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 %patch6 -p1
 
 %build
@@ -136,7 +137,7 @@ rm -r skins/*
 #%{__cc} plugins/amsnplus/snapshot.c -o plugins/amsnplus/snapshot %{rpmcflags} %{rpmldflags} `imlib-config --cflags` `imlib-config --libs`
 
 %install
-rm -rf $RPM_BUILD_ROOT
+%{__rm} -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_iconsdir}/hicolor,%{_pixmapsdir},%{_desktopdir}}
 
 %{__make} install \
@@ -149,16 +150,16 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote-CLI $RPM_BUILD_ROOT%{_bindir}/
 #install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/amsnplus
 #mv $RPM_BUILD_ROOT{%{_datadir},%{_libdir}}/%{name}/plugins/amsnplus/snapshot
 
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/base64
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/log
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/sha1
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/snit
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/uri
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/docs
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/{AGREEMENT,FAQ,GNUGPL,INSTALL,remote.help,TODO}
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/{CREDITS,HELP,README}
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/base64
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/http
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/log
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/sha1
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/snit
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/uri
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/docs
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/{AGREEMENT,FAQ,GNUGPL,INSTALL,remote.help,TODO}
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/{CREDITS,HELP,README}
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
 
 install -d $RPM_BUILD_ROOT%{tcl_sitearch}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/linux/* $RPM_BUILD_ROOT%{tcl_sitearch}
@@ -173,21 +174,21 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/asyncresolver $RPM_BUILD_ROOT%{tcl_s
 
 mv $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_desktopdir}}/%{name}.desktop
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons/* $RPM_BUILD_ROOT%{_iconsdir}/hicolor
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons
-rm $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons
+%{__rm} $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
-rm $RPM_BUILD_ROOT%{_datadir}/%{name}/plugins/amsnplus/{snapshot.c,Makefile}
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/plugins/amsnplus/{snapshot.c,Makefile}
 
 #%{_datadir}/%{name}/plugins/growl/styles/aMSN.growlStyle/Contents/Resources/default.css
 #%{_datadir}/%{name}/plugins/growl/styles/aMSNMac.growlStyle/Contents/Info.plist
 #%{_datadir}/%{name}/plugins/address_book/utils/addressbook/pkgIndex.tcl
 
 # docs in docs
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/*/test.tcl
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/*/test.tcl
 
 %find_lang %{name}
 
-grep /plugins/ %{name}.lang > %{name}-plugins.lang
+%{__grep} /plugins/ %{name}.lang > %{name}-plugins.lang
 sed -i -e '/plugins/d' %{name}.lang
 
 %clean
