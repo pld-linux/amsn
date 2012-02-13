@@ -7,7 +7,7 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.98.4
-Release:	5
+Release:	6
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://downloads.sourceforge.net/project/amsn/amsn/%{version}/%{name}-%{version}-src.tar.gz
@@ -19,6 +19,7 @@ Patch2:		useV4L2.patch
 Patch3:		%{name}-bwidget.patch
 Patch4:		ca-certificates.patch
 Patch6:		%{name}-disable-autoupdate.patch
+Patch7:		%{name}-libpng15.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	farsight2-devel
 BuildRequires:	gupnp-igd-devel
@@ -124,6 +125,7 @@ find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 %patch3 -p1
 %patch4 -p1
 %patch6 -p1
+%patch7 -p0
 
 %build
 # NOTE: enable debug allows us to keep debug symbols in -debuginfo package
