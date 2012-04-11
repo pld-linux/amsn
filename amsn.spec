@@ -7,10 +7,10 @@ Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
 Version:	0.98.4
-Release:	6
+Release:	7
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://downloads.sourceforge.net/project/amsn/amsn/%{version}/%{name}-%{version}-src.tar.gz
+Source0:	http://downloads.sourceforge.net/amsn/%{name}-%{version}-src.tar.gz
 # Source0-md5:	3cf69c4a7773888cea854927c83b9cfb
 Source1:	find-lang.sh
 Patch0:		%{name}-desktop.patch
@@ -20,8 +20,10 @@ Patch3:		%{name}-bwidget.patch
 Patch4:		ca-certificates.patch
 Patch6:		%{name}-disable-autoupdate.patch
 Patch7:		%{name}-libpng15.patch
+Patch8:		farstream.patch
 URL:		http://www.amsn-project.net/
-BuildRequires:	farsight2-devel
+BuildRequires:	autoconf
+BuildRequires:	farstream-devel
 BuildRequires:	gupnp-igd-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 2:1.4
@@ -126,8 +128,12 @@ find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 %patch4 -p1
 %patch6 -p1
 %patch7 -p0
+%patch8 -p1
 
 %build
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
 # NOTE: enable debug allows us to keep debug symbols in -debuginfo package
 %configure \
 	--enable-debug \
@@ -139,7 +145,7 @@ find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 #%{__cc} plugins/amsnplus/snapshot.c -o plugins/amsnplus/snapshot %{rpmcflags} %{rpmldflags} `imlib-config --cflags` `imlib-config --libs`
 
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_iconsdir}/hicolor,%{_pixmapsdir},%{_desktopdir}}
 
 %{__make} install \
