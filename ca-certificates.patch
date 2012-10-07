@@ -17,6 +17,6 @@
  FILES_TO_INSTALL += utils/log utils/uri utils/combobox utils/voipcontrols
 -FILES_TO_INSTALL += utils/md4 utils/sasl ca-certs
 +FILES_TO_INSTALL += utils/md4 utils/sasl
+ FILES_TO_INSTALL += msnp2p
  
  FILES_TO_EXCLUDE := lang/genpage.c lang/addkey.tcl lang/lang1.tmpl lang/lang2.tmpl lang/lang3.tmpl lang/langchk.sh lang/complete.pl lang/genlangfiles.c
- 

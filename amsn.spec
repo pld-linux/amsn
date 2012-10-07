@@ -6,24 +6,22 @@ Summary(de.UTF-8):	MSN Messenger-Klon für Linux
 Summary(fr.UTF-8):	Clône MSN Messenger pour Linux
 Summary(pl.UTF-8):	Klon MSN Messengera dla Linuksa
 Name:		amsn
-Version:	0.98.4
-Release:	7
+Version:	0.98.9
+Release:	1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://downloads.sourceforge.net/amsn/%{name}-%{version}-src.tar.gz
-# Source0-md5:	3cf69c4a7773888cea854927c83b9cfb
+# Source0-md5:	b98f7a26df34a79b8bfade1ff2ccc88a
 Source1:	find-lang.sh
 Patch0:		%{name}-desktop.patch
 Patch1:		%{name}-paths.patch
-Patch2:		useV4L2.patch
-Patch3:		%{name}-bwidget.patch
-Patch4:		ca-certificates.patch
-Patch6:		%{name}-disable-autoupdate.patch
-Patch7:		%{name}-libpng15.patch
-Patch8:		farstream.patch
+Patch2:		%{name}-bwidget.patch
+Patch3:		ca-certificates.patch
+Patch4:		%{name}-disable-autoupdate.patch
 URL:		http://www.amsn-project.net/
 BuildRequires:	autoconf
 BuildRequires:	farstream-devel
+BuildRequires:	gupnp-devel
 BuildRequires:	gupnp-igd-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 2:1.4
@@ -126,9 +124,6 @@ find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch6 -p1
-%patch7 -p0
-%patch8 -p1
 
 %build
 %{__aclocal}
@@ -138,6 +133,7 @@ find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 %configure \
 	--enable-debug \
 	CFLAGS="%{rpmcflags}"
+
 %{__make} \
 	verbose=yes
 
@@ -148,7 +144,7 @@ find -name '*.tcl' -print0 | xargs -0 sed -i -e 's,\r$,,'
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_iconsdir}/hicolor,%{_pixmapsdir},%{_desktopdir}}
 
-%{__make} install \
+%{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn $RPM_BUILD_ROOT%{_bindir}/amsn
@@ -170,15 +166,14 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/amsn-remote-CLI $RPM_BUILD_ROOT%{_bindir}/
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
 
 install -d $RPM_BUILD_ROOT%{tcl_sitearch}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/linux/* $RPM_BUILD_ROOT%{tcl_sitearch}
-rmdir $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/linux
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/TkCximage $RPM_BUILD_ROOT%{tcl_sitearch}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/webcamsn $RPM_BUILD_ROOT%{tcl_sitearch}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/tcl_siren $RPM_BUILD_ROOT%{tcl_sitearch}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/tclISF $RPM_BUILD_ROOT%{tcl_sitearch}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/gupnp $RPM_BUILD_ROOT%{tcl_sitearch}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/farsight $RPM_BUILD_ROOT%{tcl_sitearch}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/utils/asyncresolver $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/utils/linux/* $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/utils/TkCximage $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/utils/webcamsn $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/utils/tcl_siren $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/utils/tclISF $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/utils/gupnp $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/utils/farsight $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/utils/asyncresolver $RPM_BUILD_ROOT%{tcl_sitearch}
 
 mv $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_desktopdir}}/%{name}.desktop
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/desktop-icons/* $RPM_BUILD_ROOT%{_iconsdir}/hicolor
@@ -218,6 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.tcl
 %{_datadir}/%{name}/hotmlog.htm
+%{_datadir}/%{name}/msnp2p
 
 # langlist explains the language codes used
 %{_datadir}/%{name}/langlist
@@ -234,6 +230,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{tcl_sitearch}/*/*.so
 %dir %{tcl_sitearch}/capture/libng
 %dir %{tcl_sitearch}/capture/libng/plugins
+%attr(755,root,root) %{tcl_sitearch}/capture/libng/*.so
 %attr(755,root,root) %{tcl_sitearch}/capture/libng/plugins/*.so
 
 %files plugins -f %{name}-plugins.lang
